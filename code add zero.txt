@@ -1,0 +1,28 @@
+import findspark
+findspark.init()
+
+import pyspark
+import random
+
+from pyspark.context import SparkContext
+from pyspark.sql.session import SparkSession
+sc = SparkContext('local')
+spark = SparkSession(sc)
+
+list_data=[["babu",20],["raja",8],["pratik",7],["mohan",100]]
+df1=spark.createDataFrame(list_data,["name","score"])
+df1.show()
+
+#By lpad function
+
+from pyspark.sql.functions import lpad
+df2=df1.withColumn("score_000",lpad("score",3,"0"))
+df2.show()
+
+#By format_string function
+
+from pyspark.sql.functions import format_string
+df2=df1.withColumn("score_000",format_string("%04d","score"))
+df2.show()
+
+df2=df1.withColumn("score_000",format_string("%s#%03d","name","score")).show()
